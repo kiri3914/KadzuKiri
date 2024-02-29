@@ -35,9 +35,15 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Local apps
-    'apps.mainapp',
+    'apps.authorization',
+    'apps.customers',
+    "apps.deliveries",
+    "apps.managers",
+    "apps.products",
 
 ]
+
+AUTH_USER_MODEL = 'authorization.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
