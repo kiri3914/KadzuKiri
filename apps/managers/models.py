@@ -1,7 +1,8 @@
 from django.db import models
+from authorization.models import User
 
 class Department(models.Model):
-    title = models.CharField()
+    title = models.CharField(max_length=255)
 
     def __str__(self):
         return self.title
@@ -17,7 +18,7 @@ class Managers(models.Model):
         ('Head', 'Главный менеджер'),
         ('Supervisor', 'Начальник'),
     )
-    id = models.OneToOneField(Department, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     position = models.CharField(max_length=100, choices=POSITION_CHOICES)
     contact_number = models.IntegerField()
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
@@ -25,4 +26,4 @@ class Managers(models.Model):
 
 
     def __str__(self):
-        return self.id
+        return self.user
