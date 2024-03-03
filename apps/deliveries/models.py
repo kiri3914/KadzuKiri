@@ -1,5 +1,5 @@
 from django.db import models
-from customers.models import Adress, Cart
+from apps.customers.models import Adress, Cart
 
 
 class StatusDeliver(models.Model):

@@ -1,5 +1,5 @@
 from django.db import models
-from authorization.models import User
+from apps.authorization.models import User
 
 class Department(models.Model):
     title = models.CharField(max_length=255)
