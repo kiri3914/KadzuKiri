@@ -27,3 +27,4 @@ class ClientViewSet(viewsets.ModelViewSet):
 class FavoritesViewSet(viewsets.ModelViewSet):
     queryset = Favorites.objects.all()
     serializer_class = FavoritesSerializer
+

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.db import models
 from apps.customers.models import Adress, Cart
 
@@ -19,3 +20,6 @@ class Delivery(models.Model):
 
     def __str__(self):
         return self.adress
+=======
+from django.db import models
+>>>>>>> e5d2cd847aaf3a7251e7a50cf99feea202f27fb1
