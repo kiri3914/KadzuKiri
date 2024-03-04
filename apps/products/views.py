@@ -57,10 +57,12 @@ class ProductFilter(FilterSet):
     """
     start_date = DateFilter(field_name="created_at", lookup_expr='gte')
     end_date = DateFilter(field_name="created_at", lookup_expr='lte')
+    start_price = DateFilter(field_name="price", lookup_expr='gte')
+    end_price = DateFilter(field_name="price", lookup_expr='lte')
 
     class Meta:
         model = Product
-        fields = ['category', 'start_date', 'end_date', 'price']
+        fields = ['category', 'start_date', 'end_date', 'start_price', 'end_price', 'is_available']
 
 
 class ProductViewSet(viewsets.ModelViewSet):

@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 class UserManager(BaseUserManager):
     def create(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError('Пользователю необходимо ввести свой e-mail')
 
         user = self.model(
             email=self.normalize_email(email),
@@ -41,6 +41,9 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'telegram_id'
     REQUIRED_FIELDS = []
+
+    REQUIRED_FIELDS = ['email']
+
 
     objects = UserManager()
 
