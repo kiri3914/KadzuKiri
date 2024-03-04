@@ -8,7 +8,6 @@ router.register(r'delivery', DeliveryViewSet, basename='delivery')
 router.register(r'status_delivery', StatusDeliverViewSet, basename='status_delivery')
 
 
-urlpatterns = []
 
 
 urlpatterns = router.urls
