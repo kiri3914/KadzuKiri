@@ -11,12 +11,7 @@ class ManagersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Managers
         fields = '__all__'
-        depth = 1
-        extra_kwargs = {
-            'department': {'write_only': True}
-        }
-        read_only_fields = ('department',)
-        write_only_fields = ('department',)
+
 
     def create(self, validated_data):
         department = validated_data.pop('department')

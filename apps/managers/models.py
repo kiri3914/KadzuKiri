@@ -7,6 +7,7 @@ class Department(models.Model):
     def __str__(self):
         return self.title
 
+
 class Managers(models.Model):
     POSITION_CHOICES = (
         ('Manager', 'Менеджер'),
