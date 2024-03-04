@@ -3,6 +3,7 @@ from . import views
 
 router = DefaultRouter()
 
-# write your routers here 
+router.register('manager', views.ManagersViewSet)
+router.register('departament', views.DepartmentViewSet)
 
 urlpatterns = router.urls
