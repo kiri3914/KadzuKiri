@@ -39,7 +39,7 @@ class User(AbstractUser):
     telegram_id = models.CharField(max_length=25,unique=True)
 
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'telegram_id'
     REQUIRED_FIELDS = []
 
     objects = UserManager()

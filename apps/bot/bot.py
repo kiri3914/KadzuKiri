@@ -3,8 +3,10 @@ import os
 import dotenv
 import telebot
 from telebot import types
+from django.core.validators import validate_email
 
 from apps.authorization.models import User
+from .utils import valid_email
 
 dotenv.load_dotenv()
 
@@ -39,6 +41,10 @@ def add_user(message):
 def add_email(message):
     email = message.text
     # Сохраняем email в контексте
+    if User.objects.filter(email=email).exists():
+        bot.send_message(message.chat.id, 'Пользователь с таким email уже существует.')
+        bot.register_next_step_handler(message, add_email)
+        return
     user_data['email'] = email
     bot.send_message(message.chat.id, 'Введите имя пользователя:')
     bot.register_next_step_handler(message, add_username)
@@ -58,5 +64,8 @@ def add_username(message):
         bot.send_message(message.chat.id, 'Что-то пошло не так. Пожалуйста, попробуйте снова.')
 
 def main():
-    print()
-    bot.polling(none_stop=True)
+    try:
+        print("Бот запущен:")
+        bot.polling(none_stop=True)
+    except Exception as e:
+        print(f"Ошибка при запуске бота: {e}")
