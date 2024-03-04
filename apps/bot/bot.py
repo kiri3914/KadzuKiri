@@ -5,6 +5,7 @@ import telebot
 from telebot import types
 
 from apps.authorization.models import User
+from .utils import valid_email
 
 dotenv.load_dotenv()
 
@@ -39,6 +40,9 @@ def add_user(message):
 def add_email(message):
     email = message.text
     # Сохраняем email в контексте
+    if User.objects.filter(email=email).exists():
+        bot.send_message(message.chat.id, 'Пользователь с таким именем уже существует. Пожалуйста введите другой email')
+        bot.register_next_step_handler(message, add_username)
     user_data['email'] = email
     bot.send_message(message.chat.id, 'Введите имя пользователя:')
     bot.register_next_step_handler(message, add_username)
@@ -58,5 +62,7 @@ def add_username(message):
         bot.send_message(message.chat.id, 'Что-то пошло не так. Пожалуйста, попробуйте снова.')
 
 def main():
-    print()
-    bot.polling(none_stop=True)
+    try:
+        print('Бот запущен: https://t.me/Anchik87_bot')
+        bot.polling(none_stop=True)
+    except
