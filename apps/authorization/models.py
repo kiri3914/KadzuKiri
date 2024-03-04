@@ -45,4 +45,4 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return f'Пользователь - {self.email}'
+        return f'Пользователь - {self.telegram_id}'

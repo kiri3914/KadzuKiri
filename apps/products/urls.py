@@ -1,23 +1,11 @@
-"""
-Register some views
-# https://www.django-rest-framework.org/api-guide/routers/
-
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 from . import views
+from rest_framework.routers import DefaultRouter
+from .views import ProductViewSet, CategoryViewSet, ProductImageViewSet
 
 router = DefaultRouter()
-
-router.register('category', views.CategoryViewSet)
-router.register('news', views.NewsViewSet)
-
-urlpatterns = router.urls
-"""
-
-from rest_framework.routers import DefaultRouter
-from . import views
-
-router = DefaultRouter()
-
-# write your routers here 
+router.register('product', ProductViewSet, basename='product')
+router.register('category', CategoryViewSet, basename='category')
+router.register('product_pics', ProductImageViewSet, basename='product_pics')
 
 urlpatterns = router.urls
