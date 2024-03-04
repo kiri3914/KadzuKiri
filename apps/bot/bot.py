@@ -3,6 +3,7 @@ import os
 import dotenv
 import telebot
 from telebot import types
+from django.core.validators import validate_email
 
 from apps.authorization.models import User
 from .utils import valid_email
@@ -20,29 +21,42 @@ user_data = {}
 def send_welcome(message):
     bot.reply_to(message, "Привет! Я твой тестовый бот.")
 
+    bot.send_message(message.chat.id, "Для регистрации нажми /register")
 @bot.message_handler(commands=['users'])
 def get_users(message):
     users = User.objects.all()
     for user in users:
         bot.send_message(message.chat.id, f'ID: {user.id}, Имя: {user.username}, Email: {user.email}, Телефон: {user.phone_number}, Активен: {user.is_active}, Сотрудник: {user.is_staff}')
     bot.send_message(message.chat.id, f'Количество пользователей: {len(users)}')
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton('Добавить пользователя')
-    markup.add(item1)
-    bot.send_message(message.chat.id, 'Выберите действие:', reply_markup=markup)
-    bot.register_next_step_handler(message, add_user)
 
-@bot.message_handler(commands=['add_user'])
-def add_user(message):
+
+@bot.message_handler(commands=['register'])
+def register(message):
+    if User.objects.filter(telegram_id=message.chat.id).exists():
+        bot.send_message(message.chat.id, 'Вы уже Авторизованы!')
+        return
     bot.send_message(message.chat.id, 'Введите email пользователя:')
     bot.register_next_step_handler(message, add_email)
 
 def add_email(message):
     email = message.text
     # Сохраняем email в контексте
+
     if User.objects.filter(email=email).exists():
         bot.send_message(message.chat.id, 'Пользователь с таким именем уже существует. Пожалуйста введите другой email')
         bot.register_next_step_handler(message, add_username)
+
+    try: 
+        validate_email(email)
+    except:
+        bot.send_message(message.chat.id, 'Некорректный email. Пожалуйста, введите корректный email.')
+        bot.register_next_step_handler(message, add_email)
+        return
+    if User.objects.filter(email=email).exists():
+        bot.send_message(message.chat.id, 'Пользователь с таким email уже существует. Пожалуйста, введите другой email.')
+        bot.register_next_step_handler(message, add_email)
+        return
+
     user_data['email'] = email
     bot.send_message(message.chat.id, 'Введите имя пользователя:')
     bot.register_next_step_handler(message, add_username)
@@ -60,6 +74,15 @@ def add_username(message):
         bot.register_next_step_handler(message, get_users)
     else:
         bot.send_message(message.chat.id, 'Что-то пошло не так. Пожалуйста, попробуйте снова.')
+
+@bot.message_handler(commands=['delete'])
+def delete_user(message):
+    if not User.objects.filter(telegram_id=message.chat.id).exists():
+        bot.send_message(message.chat.id, 'Вы не авторизованы!')
+        return
+    User.objects.get(telegram_id=message.chat.id).delete()
+    bot.send_message(message.chat.id, 'Вы успешно удалили аккаунт для обраной регистрации нажмите на: /register')
+
 
 def main():
     try:

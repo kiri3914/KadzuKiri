@@ -40,7 +40,11 @@ class User(AbstractUser):
 
 
     USERNAME_FIELD = 'telegram_id'
+
     REQUIRED_FIELDS = []
+
+    REQUIRED_FIELDS = ['email']
+
 
     objects = UserManager()
 
