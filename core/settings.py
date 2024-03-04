@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "apps.deliveries",
     "apps.managers",
     "apps.products",
+    "apps.bot",
 
 ]
 

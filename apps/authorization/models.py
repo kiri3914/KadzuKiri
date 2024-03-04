@@ -36,6 +36,7 @@ class User(AbstractUser):
     birth_date = models.DateField(blank=True, null=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    telegram_id = models.CharField(max_length=25,unique=True)
 
 
     USERNAME_FIELD = 'email'
