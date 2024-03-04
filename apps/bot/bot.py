@@ -41,11 +41,6 @@ def register(message):
 def add_email(message):
     email = message.text
     # Сохраняем email в контексте
-
-    if User.objects.filter(email=email).exists():
-        bot.send_message(message.chat.id, 'Пользователь с таким именем уже существует. Пожалуйста введите другой email')
-        bot.register_next_step_handler(message, add_username)
-
     try: 
         validate_email(email)
     except:
@@ -56,7 +51,6 @@ def add_email(message):
         bot.send_message(message.chat.id, 'Пользователь с таким email уже существует. Пожалуйста, введите другой email.')
         bot.register_next_step_handler(message, add_email)
         return
-
     user_data['email'] = email
     bot.send_message(message.chat.id, 'Введите имя пользователя:')
     bot.register_next_step_handler(message, add_username)
@@ -86,6 +80,7 @@ def delete_user(message):
 
 def main():
     try:
-        print('Бот запущен: https://t.me/Anchik87_bot')
+        print("Бот запущен: https://t.me/asik_king_bot")
         bot.polling(none_stop=True)
-    except
+    except Exception as e:
+        print(f"Ошибка при запуске бота: {e}")
