@@ -1,5 +1,5 @@
 from django.db import models
-from apps.authorization import User
+from apps.authorization.models import User
 from apps.products.models import Product
 
 

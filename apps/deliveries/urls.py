@@ -1,23 +1,13 @@
-"""
-Register some views
-# https://www.django-rest-framework.org/api-guide/routers/
-
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 from . import views
+from rest_framework.routers import DefaultRouter
+from .views import DeliveryViewSet, StatusDeliverViewSet
 
 router = DefaultRouter()
+router.register(r'delivery', DeliveryViewSet, basename='delivery')
+router.register(r'status_delivery', StatusDeliverViewSet, basename='status_delivery')
 
-router.register('category', views.CategoryViewSet)
-router.register('news', views.NewsViewSet)
 
-urlpatterns = router.urls
-"""
 
-from rest_framework.routers import DefaultRouter
-from . import views
-
-router = DefaultRouter()
-
-# write your routers here 
 
 urlpatterns = router.urls
