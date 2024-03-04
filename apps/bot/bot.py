@@ -80,7 +80,7 @@ def delete_user(message):
 
 def main():
     try:
-        print("Бот запущен: https://t.me/asik_king_bot")
+        print("Бот запущен")
         bot.polling(none_stop=True)
     except Exception as e:
         print(f"Ошибка при запуске бота: {e}")
