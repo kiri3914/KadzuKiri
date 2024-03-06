@@ -1,3 +1,4 @@
+from telebot import types
 from apps.bot.settings import bot
 from apps.bot.services.carts import cart_service
 
@@ -21,3 +22,30 @@ def add_product_cart(call):
         bot.delete_message(call.message.chat.id, call.message.message_id)
         return
     bot.send_message(call.message.chat.id, 'Не удолось добавить товар в корзину!')
+
+
+
+
+
+@bot.message_handler(commands=['cart'])
+def show_cart(message):
+    """
+    Показать корзину пользователя
+    """
+    tg_id = message.from_user.id
+    cart = cart_service.get_cart(tg_id)
+    if cart:
+        items = cart_service.get_cart_items(cart)
+        markup = types.InlineKeyboardMarkup()
+        for item in items:
+            markup.add(types.InlineKeyboardButton(
+                text=item.product.name,
+                callback_data=f'cartitem_{item.product.id}'))
+        bot.send_message(message.chat.id, 'Ваши товары: ', reply_markup=markup)
+
+    else:
+        bot.send_message(message.chat.id, 'Корзина пуста!')
+        bot.delete_message(message.chat.id, message.message_id)
+        return
+
+

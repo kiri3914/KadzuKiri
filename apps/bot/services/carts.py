@@ -1,10 +1,9 @@
 from apps.customers.models import Cart, CartItem, Client
 from apps.products.models import Product
 
-
 class CartService:
     @staticmethod
-    def get_cart_by_tg_id(tg_id: int) -> Cart:
+    def get_cart(tg_id: int) -> Cart:
         """
         Функция которая получает корзину клиента по телеграмм id
         A если не нашлось корзины то создает её и возвращает корзину.
@@ -32,25 +31,26 @@ class CartService:
         return cart_item
 
     @staticmethod
-    def add_product_to_cart(cart: Cart, product_id: int, quantity: int):
+    def add_product(cart: Cart, product_id: int, count: int):
         """
         Функция которая добавляет товар в корзину.
         """
         product = Product.objects.get(id=product_id)
         cart_item = CartService.get_cart_item_by_product(cart, product)
         if cart_item is None:
-            cart_item = CartItem.objects.create(cart=cart, product=product, quantity=quantity)
+            cart_item = CartItem.objects.create(cart=cart, product=product, count=count)
         else:
-            cart_item.quantity += quantity
+            cart_item.count += count
             cart_item.save()
         return cart_item
 
     @staticmethod
-    def get_cart_items(cart: Cart):
+    def get_cart_items(cart: Cart) -> list[CartItem]:
         """
         Функция которая получает все товары из корзины.
         """
-        cart_items = CartItem.objects.filter(cart=cart)
-        return cart_items
+        return CartItem.objects.filter(cart=cart)
 
 cart_service = CartService()
+
+

@@ -1,3 +1,4 @@
+from typing import Iterable
 from django.db import models
 from apps.authorization.models import User
 from apps.products.models import Product
@@ -54,6 +55,10 @@ class CartItem(models.Model):
     
     def __str__(self):
         return f'{self.cart} - {self.product}'
+    
+    def save(self,  *args, **kwargs) -> None:
+        self.total_price = self.product.price * self.count
+        super().save(*args, **kwargs)
 
     def save(self, *args, **kwargs):
         self.total_price = self.product.price * self.count
