@@ -73,15 +73,16 @@ def contact(message):
     client = Client(user=user)
 
     # Получение информации о файле фотографии
-    file_id = bot.get_user_profile_photos(user.telegram_id, limit=1).photos[0][-1].file_id
-    file_info = bot.get_file(file_id)
-    file_url = f'https://api.telegram.org/file/bot{bot_token}/{file_info.file_path}'
+    photos = bot.get_user_profile_photos(user.telegram_id, limit=1).photos
+    if photos:
+        file_info = bot.get_file(photos[0][-1].file_id)
+        file_url = f'https://api.telegram.org/file/bot{bot_token}/{file_info.file_path}'
 
-    # Загрузка фотографии в поле image экземпляра Client
-    with NamedTemporaryFile(delete=True) as temp_file:
-        temp_file.write(request.urlopen(file_url).read())
-        temp_file.flush()
-        client.image.save(f'{user.telegram_id}_photo.jpg', File(temp_file))
+        # Загрузка фотографии в поле image экземпляра Client
+        with NamedTemporaryFile(delete=True) as temp_file:
+            temp_file.write(request.urlopen(file_url).read())
+            temp_file.flush()
+            client.image.save(f'{user.telegram_id}_photo.jpg', File(temp_file))
 
     client.save()
 
