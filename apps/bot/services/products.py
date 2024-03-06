@@ -18,7 +18,7 @@ class ProductService:
         return Product.objects.filter(name__icontains=search_term)
     
     @staticmethod
-    def get_product_by_category(category_id):
-        return Product.objects.get(category__id=category_id)
+    def get_products_by_category(category_id):
+        return Product.objects.filter(category__id=category_id)
 
 product_service = ProductService()

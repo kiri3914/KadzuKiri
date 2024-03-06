@@ -3,7 +3,7 @@ from apps.products.models import Category
 
 class CategoryService:
     @staticmethod
-    def get_all_categories():
+    def get_categories():
         return Category.objects.all()
 
     @staticmethod
