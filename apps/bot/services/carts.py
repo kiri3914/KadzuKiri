@@ -1,6 +1,7 @@
 from apps.customers.models import Cart, CartItem, Client
 from apps.products.models import Product
 
+
 class CartService:
     @staticmethod
     def get_cart_by_tg_id(tg_id: int) -> Cart:
@@ -44,5 +45,12 @@ class CartService:
             cart_item.save()
         return cart_item
 
+    @staticmethod
+    def get_cart_items(cart: Cart):
+        """
+        Функция которая получает все товары из корзины.
+        """
+        cart_items = CartItem.objects.filter(cart=cart)
+        return cart_items
 
 cart_service = CartService()

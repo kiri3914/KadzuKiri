@@ -19,4 +19,5 @@ def add_product_cart(call):
     if cart_item:
         bot.send_message(call.message.chat.id, 'Товар добавлен в корзину!')
         bot.delete_message(call.message.chat.id, call.message.message_id)
+        return
     bot.send_message(call.message.chat.id, 'Не удолось добавить товар в корзину!')
