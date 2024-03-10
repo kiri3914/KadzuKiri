@@ -1,8 +1,14 @@
-from apps.authorization.models import User
+from urllib import request
+from telebot import types
+
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
 from django.core.validators import validate_email
 
-from .settings import bot
-from telebot import types
+from apps.customers.models import Client
+from apps.authorization.models import User
+
+from .settings import bot, bot_token
 
 user_data = {}
 
@@ -38,12 +44,17 @@ def add_username(message):
     
     if email:
         # Создайте экземпляр пользователя и сохраните его
-        user = User.objects.create(email=email, username=username, telegram_id=message.chat.id)
+        user = User.objects.create(
+            email=email, username=username, telegram_id=message.chat.id
+            )
         bot.send_message(message.chat.id, f'Пользователь {user.username} успешно добавлен.')
+        
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item1 = types.KeyboardButton('Подтвердить номер', request_contact=True)
         markup.add(item1)
-        bot.send_message(message.chat.id, 'Для продолжения нажми на: /categories', reply_markup=types.ReplyKeyboardRemove())
+        bot.send_message(message.chat.id, 
+                         'Подтвердитеe телефон для регистрации. Нажмите на кнопку "Подтвердить номер".', 
+                         reply_markup=markup)
     else:
         bot.send_message(message.chat.id, 'Что-то пошло не так. Пожалуйста, попробуйте снова.')
 
@@ -53,11 +64,33 @@ def contact(message):
     if not User.objects.filter(telegram_id=message.chat.id).exists():
         bot.send_message(message.chat.id, 'Вы не авторизованы!')
         return
+
     user = User.objects.get(telegram_id=message.chat.id)
     user.phone_number = message.contact.phone_number
     user.save()
-    bot.send_message(message.chat.id, 'Телефон успешно добавлен.')
-    bot.send_message(message.chat.id, 'Для продолжения нажми на: /categories', reply_markup=types.ReplyKeyboardRemove())
+
+    # Создание экземпляра Client и сохранение фотографии из профиля Telegram
+    client = Client(user=user)
+
+    # Получение информации о файле фотографии
+    photos = bot.get_user_profile_photos(user.telegram_id, limit=1).photos
+    if photos:
+        file_info = bot.get_file(photos[0][-1].file_id)
+        file_url = f'https://api.telegram.org/file/bot{bot_token}/{file_info.file_path}'
+
+        # Загрузка фотографии в поле image экземпляра Client
+        with NamedTemporaryFile(delete=True) as temp_file:
+            temp_file.write(request.urlopen(file_url).read())
+            temp_file.flush()
+            client.image.save(f'{user.telegram_id}_photo.jpg', File(temp_file))
+
+    client.save()
+
+    bot.send_message(message.chat.id, 'Телефон и фотография успешно добавлены.')
+    bot.send_message(message.chat.id, 'Для продолжения нажми на: /categories', 
+                     reply_markup=types.ReplyKeyboardRemove())
+
+
 
 @bot.message_handler(commands=['delete'])
 def delete_user(message):

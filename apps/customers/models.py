@@ -1,3 +1,4 @@
+from typing import Iterable
 from django.db import models
 from apps.authorization.models import User
 from apps.products.models import Product
@@ -49,9 +50,13 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_item')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_cart')
     count = models.IntegerField(verbose_name='Количество товаров')
-    total_price = models.FloatField(verbose_name='Стоимость')
+    total_price = models.FloatField(verbose_name='Стоимость', default=0.0, blank=True, null=True)
     added_ad = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
     
     def __str__(self):
         return f'{self.cart} - {self.product}'
+    
+    def save(self,  *args, **kwargs) -> None:
+        self.total_price = self.product.price * self.count
+        super().save(*args, **kwargs)
 
