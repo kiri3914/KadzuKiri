@@ -1,4 +1,4 @@
-from .settings import bot
+from .settings import *
 
 from .auth import *
 from .buttons.categories import *
@@ -15,8 +15,8 @@ def send_welcome(message):
 
 
 def main():
-    try:
-        print("Бот запущен:https://t.me/donbazz_bot")
-        bot.polling(none_stop=True)
-    except Exception as e:
-        print(f"Ошибка при запуске бота: {e}")
+    # try:
+    #     print("Бот запущен:https://t.me/donbazz_bot")
+    bot.polling(none_stop=True)
+    # except Exception as e:
+    #     print(f"Ошибка при запуске бота: {e}")

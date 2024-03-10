@@ -42,7 +42,7 @@ class Cart(models.Model):
     cost_product = models.IntegerField(default=0, verbose_name='Стоимость')
     
     def __str__(self):
-        return f'{self.customer} - {self.created_at}'
+        return f'{self.customer.user.telegram_id} - {self.created_at}'
     
     
 # Товар в корзине

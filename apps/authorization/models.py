@@ -40,9 +40,9 @@ class User(AbstractUser):
 
 
     USERNAME_FIELD = 'telegram_id'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email']
 
     objects = UserManager()
 
     def __str__(self):
-        return f'Пользователь - {self.email}'
+        return f'Пользователь - {self.username}'

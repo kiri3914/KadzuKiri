@@ -15,19 +15,19 @@ class CartService:
         return cart
 
     @staticmethod
-    def get_cart_item_by_product(cart: Cart, product_id: int) -> CartItem:
+    def get_cart_item_by_product(cart: Cart, product: Product) -> CartItem:
         """
         Функция которая получает товар из корзины по его id.
         """
-        if cart is None:
-            return None
-        if product_id is None:
-            return None
-        if not isinstance(product_id, int):
-            return None
-        if not isinstance(cart, Cart):
-            return None
-        cart_item = CartItem.objects.filter(cart=cart, product__id=product_id).first()
+        cart_item = CartItem.objects.filter(cart=cart, product=product).first()
+        return cart_item
+    
+    @staticmethod
+    def get_cart_item(cartitem_id) -> CartItem:
+        """
+        Функция которая получает товар из корзины по его id.
+        """
+        cart_item = CartItem.objects.filter(id=cartitem_id).first()
         return cart_item
 
     @staticmethod
@@ -37,6 +37,7 @@ class CartService:
         """
         product = Product.objects.get(id=product_id)
         cart_item = CartService.get_cart_item_by_product(cart, product)
+        print(cart_item, cart, product)
         if cart_item is None:
             cart_item = CartItem.objects.create(cart=cart, product=product, count=count)
         else:
@@ -50,6 +51,15 @@ class CartService:
         Функция которая получает все товары из корзины.
         """
         return CartItem.objects.filter(cart=cart)
+
+
+    @staticmethod
+    def delete_cart_item(cart_item: CartItem):
+        """
+        Функция которая удаляет товар из корзины.
+        """
+        cart_item.delete()
+        return True
 
 cart_service = CartService()
 
