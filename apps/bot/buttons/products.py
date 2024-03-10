@@ -27,7 +27,7 @@ def show_product_info(call):
            f'Цена: {product.price} тенге.\n'\
            f'Описание: {product.description}\n'\
            f'Дата публикации: {product.created_at}\n'\
-           f'В наличии: {'Есть' if product.is_available else "Нет"}'
+           f"В наличии: {'Есть' if product.is_available else 'Нет'}"
     with open(product.base_image.path, 'rb') as image:
         if product.is_available:
             keyboard = types.InlineKeyboardMarkup()

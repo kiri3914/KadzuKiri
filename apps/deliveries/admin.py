@@ -1,7 +1,5 @@
 from django.contrib import admin
-from .models import StatusDeliver, Delivery
+from .models import Delivery
 
 
-
-admin.site.register(StatusDeliver)
 admin.site.register(Delivery)

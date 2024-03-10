@@ -1,6 +1,7 @@
 from apps.customers.models import Cart, CartItem, Client
 from apps.products.models import Product
 
+
 class CartService:
     @staticmethod
     def get_cart(tg_id: int) -> Cart:
@@ -14,21 +15,25 @@ class CartService:
             cart = Cart.objects.create(customer=customer)
         return cart
 
+
     @staticmethod
-    def get_cart_item_by_product(cart: Cart, product_id: int) -> CartItem:
+    def get_cart_item_by_product(cart: Cart, product: int) -> CartItem:
         """
-        Функция которая получает товар из корзины по его id.
+        Функция которая получает товар из корзины по product
         """
-        if cart is None:
-            return None
-        if product_id is None:
-            return None
-        if not isinstance(product_id, int):
-            return None
-        if not isinstance(cart, Cart):
-            return None
-        cart_item = CartItem.objects.filter(cart=cart, product__id=product_id).first()
+        cart_item = CartItem.objects.filter(cart=cart, product=product).first()
         return cart_item
+
+
+    @staticmethod
+    def get_cart_item(cartitem_id) -> CartItem:
+        """
+        Функция которая получает один товар из корзины по его id.
+        """
+        cart_item = CartItem.objects.filter(id=cartitem_id).first()
+        return cart_item
+
+
 
     @staticmethod
     def add_product(cart: Cart, product_id: int, count: int):
@@ -44,13 +49,45 @@ class CartService:
             cart_item.save()
         return cart_item
 
+
     @staticmethod
     def get_cart_items(cart: Cart) -> list[CartItem]:
         """
         Функция которая получает все товары из корзины.
         """
-        return CartItem.objects.filter(cart=cart)
+        cart_items = CartItem.objects.filter(cart=cart)
+        return cart_items.all()
+    
+    
+    @staticmethod
+    def delete_cart_item(cart_item: CartItem):
+        """
+        Функция которая удаляет товар из корзины.
+        """
+        cart_item.delete()
+        return True
+    
+    
+    @staticmethod
+    def increment(cart_item: CartItem):
+        """
+        Функция которая добавляет количество товара в корзине.
+        """
+        cart_item.count += 1
+        cart_item.save()
+        return cart_item
+    
+    
+    @staticmethod
+    def decrement(cart_item: CartItem):
+        """
+        Функция которая уменьшает количество товара в корзине.
+        """
+        cart_item.count -= 1
+        cart_item.save()
+        return cart_item
+        
+
+    
 
 cart_service = CartService()
-
-
