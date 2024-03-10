@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('delivery_date', models.DateTimeField()),
                 ('tracking_number', models.IntegerField()),
                 ('delivery_cost', models.IntegerField()),
-                ('adress', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='customers.adress')),
+                ('address', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='customers.address')),
                 ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='customers.cart')),
                 ('delivery_status', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='deliveries.statusdeliver')),
             ],

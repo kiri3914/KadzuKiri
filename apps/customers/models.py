@@ -14,8 +14,8 @@ class Client(models.Model):
     
     
 # Адрес клиента
-class Adress(models.Model):
-    customer = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='customer_adress')
+class Address(models.Model):
+    customer = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='customer_address')
     city = models.CharField(max_length=40, verbose_name='Город')
     street = models.CharField(max_length=100, verbose_name='Улица')
     home = models.CharField(max_length=10, verbose_name='Номер дома')

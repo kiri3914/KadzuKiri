@@ -1,5 +1,5 @@
-from .models import Cart, CartItem, Adress, Client, Favorites
-from .serializers import CartSerializer, CartItemSerializer, AdressSerializer, ClientSerializer, FavoritesSerializer
+from .models import Cart, CartItem, Address, Client, Favorites
+from .serializers import CartSerializer, CartItemSerializer, AddressSerializer, ClientSerializer, FavoritesSerializer
 
 from rest_framework import viewsets
 
@@ -14,9 +14,9 @@ class CartItemViewSet(viewsets.ModelViewSet):
     serializer_class = CartItemSerializer
 
 
-class AdressViewSet(viewsets.ModelViewSet):
-    queryset = Adress.objects.all()
-    serializer_class = AdressSerializer
+class AddressViewSet(viewsets.ModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
 
 
 class ClientViewSet(viewsets.ModelViewSet):

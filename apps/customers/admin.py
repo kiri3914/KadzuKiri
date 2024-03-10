@@ -1,15 +1,15 @@
 from django.contrib import admin
-from .models import Client, Adress, Favorites, Cart, CartItem
+from .models import Client, Address, Favorites, Cart, CartItem
 
 
-class AdressAdmin(admin.TabularInline):
-    model = Adress
+class AddressAdmin(admin.TabularInline):
+    model = Address
     extra = 1
     list_display = ('city', 'client')    
 
 
 class ClientAdmin(admin.ModelAdmin):
-    inlines = [AdressAdmin]
+    inlines = [AddressAdmin]
     list_display = ('user',)  
 
 
