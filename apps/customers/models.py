@@ -10,7 +10,7 @@ class Client(models.Model):
     image = models.ImageField(upload_to='clients/', blank=True, null=True)
     
     def __str__(self):
-        return self.user
+        return self.user.telegram_id
     
     
 # Адрес клиента
