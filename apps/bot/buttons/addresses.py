@@ -50,7 +50,13 @@ def address_handler(message):
         latitude = message.location.latitude
         longitude = message.location.longitude
         address = get_address(latitude, longitude)
-
+        if address:
+            instance = create_address(message.chat.id, address)
+            if instance:
+                bot.send_message(message.chat.id, 'Адрес успешно создан')
+                bot.send_message(message.chat.id, instance)
+            else:
+                bot.send_message(message.chat.id, 'Вы не авторизованы')   
     else:
         bot.send_message(message.chat.id, 'Не удалось получить адрес')
 
@@ -66,12 +72,13 @@ def create_address(tg_id, address):
         city = address['city']
         street = address['road']
         home = address['house_number']
-        Adress.objects.create(
+        address = Adress.objects.create(
             customer=customer,
             city=city,
             street=street,
             home=home
             )
+        return address
     
 
 
