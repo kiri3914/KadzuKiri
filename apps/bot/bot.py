@@ -4,6 +4,7 @@ from .auth import *
 from .buttons.categories import *
 from .buttons.products import *
 from .buttons.carts import *
+from .buttons.addresses import *
 
 
 @bot.message_handler(commands=['start', 'help'])

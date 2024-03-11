@@ -19,10 +19,11 @@ class Adress(models.Model):
     city = models.CharField(max_length=40, verbose_name='Город')
     street = models.CharField(max_length=100, verbose_name='Улица')
     home = models.CharField(max_length=10, verbose_name='Номер дома')
-    number_apt = models.CharField(max_length=5, verbose_name='Номер квартиры')
     
     def __str__(self):
-        return f'{self.city}, {self.street}'
+        return f'Город: {self.city}\n'\
+               f'Улица: {self.street}\n'\
+               f'Дом: {self.home}' 
     
     
 # Избранное клиента
